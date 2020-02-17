@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<title>3 en raya</title>
+<script src="./00Librerias/jquery-3.4.1.min.js" type="text/javascript"></script>
+<style type="text/css">
+#tablero {
+    border-collapse: collapse;
+    float: left;
+    width: 40%;
+}
+#log {
+    border-collapse: collapse;
+    float: left;
+    width: 40%;
+    margin-left: 5%;
+    border: 1px solid #555;
+    min-height: 100px;
+    margin-top: 10px;
+}
+#tablero td, #tablero th {
+    border: 1px solid #000080;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    margin: 0;
+    background: #bacdde;
+    font-size: 3em;
+}
+.clear {
+    clear: both;
+}
+#log {
+    padding: 1em;
+}
+#log p:nth-child(1) {
+    font-weight: bold;
+}
+button {
+    margin-top: 1em;
+}
+.j1 {
+    color: red;
+}
+.j2 {
+    color: blue;
+}
+#explicacion {
+    border-collapse: collapse;
+    padding: 0em 1em 0em 1em;
+    border: 1px solid #AEA5FF;
+    background-color: #F3F0FF;
+    width: 40%;
+    float: left;
+    margin-left: 5%;
+}
+#explicacion p:first-child {
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 5px;
+    text-decoration: underline;
+}
+#explicacion p:last-child {
+    margin-top: 5px;
+}
+</style>
+</head>
+<body>
+<div>
+  <table id="tablero">
+    <thead>
+      <tr>
+        <th></th>
+        <th>A</th>
+        <th>B</th>
+        <th>C</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <div id="explicacion">
+    <p>Explicación:</p>
+    <p>El jugador 1 juega con 'X', y el jugador 2 con 'O'. 
+      Indica primero la columna (A, B o C) y seguidamente la fila (1, 2 o 3).</p>
+  </div>
+  <div id="log">
+    <p>:: Movimientos ::</p>
+  </div>
+  <div class="clear"></div>
+</div>
+<button onclick="SiguienteTurno(); return false;">Siguiente Turno</button>
+</body>
+<script>
+	let jugador = 0;
+	let tablero = new Tablero();
+	
+	function Tablero(jugador){
+		this.fila1= new Array ("","","");
+		this.fila2= new Array ("","","");
+		this.fila3= new Array ("","","");
+		this.arrayBidimensional = new Array (this.fila1, this.fila2, this.fila3);
+		this.jugador = 1;
+		
+		this.pideCoordenadas = function (jugador){
+	
+			let correcta = false;
+			while (correcta==false) {
+				let coord = prompt("Jugador "+jugador+": Escribe las coordenadas (por ejemplo, A2)");
+				if (coord.charAt(2)==""){
+					let col = coord.charAt(0).toUpperCase();
+					let fila = (parseInt(coord.charAt(1)))-1;
+
+					if (col=="A" || col=="B" || col=="C"){
+						let colnum = 0;
+						if (col=="A"){ 
+							colnum=0; 
+						} else if (col=="B") { 
+							colnum=1;
+						} else { 
+							colnum=2; 
+						}
+
+						if (fila < 3){
+								if (jugador==1){
+									jugador="X";
+								} else{
+									jugador="O";
+								}
+								this.actualizaMatriz(fila, colnum, jugador);
+								correcta = true;
+						} else {
+							alert ("Coordenada incorrecta, fila NO válida (1, 2 o 3).");
+						}
+					} else {
+						alert("Coordenada incorrecta, columna NO válida (A, B o C).");
+					}
+				} else {
+					alert ("Solo puedes especificar dos parámetros ('Columna y Fila')");
+				}
+			}
+
+		}
+		
+		this.actualizaMatriz = function (fila, colnum, jugador){
+			let utilizada = false;
+			do{
+				if (this.arrayBidimensional[fila][colnum] != ""){
+					alert("La coordenada especificada ya se ha usado.");
+					utilizado=true;
+					if (jugador=="X"){
+						jugador="1";
+					} else{
+						jugador="2";
+					}
+					this.pideCoordenadas(jugador);
+				} else {
+					utilizado = false;
+					this.arrayBidimensional[fila][colnum] = jugador;
+					this.actualizaTablero (fila, colnum, jugador);
+				}
+			} while (utilizada == true);
+						
+		}
+		
+		this.actualizaTablero = function (fila, colnum, jugador){
+			let filasTot = $("#tablero tbody").eq(0).find("tr");
+			let columnasTot = $("#tablero tbody tr").eq(0).find("td");
+			let filaInput = parseInt(fila);
+			let columnaInput = parseInt(colnum)+1;
+			let valorInput = jugador;
+			let col;
+			if (colnum==0){ col="A"}
+			else if (colnum==1){ col="B"}
+			else if (colnum==2){ col="C" }
+			
+	
+			if (filaInput < filasTot.length && columnaInput < columnasTot.length){
+				let celda = $('#tablero tbody tr').eq(filaInput).find("td").eq(columnaInput);
+				celda.html(valorInput);
+				
+				if (jugador=="X"){
+					celda.attr("class","j1");
+					$("#log").append("<p class='j1'>J1: "+col+""+(fila+1)+"</p>");
+				} else {
+					celda.attr("class","j2");
+					$("#log").append("<p class='j2'>J2: "+col+""+(fila+1)+"</p>");
+				}
+			this.compruebaTablero(fila,colnum,jugador);
+			}
+			
+		}
+		
+		this.compruebaTablero = function (fila, colnum, jugador){
+			let contador = 1;
+			let win = false;
+
+			// columnas
+			for (let i = 0; i < 3; i++){
+				contador = 1;
+				for (let j = 0; j < 3; j++){
+					if (j>0){
+						if (this.arrayBidimensional[j-1][i] == this.arrayBidimensional[j][i] && this.arrayBidimensional[j][i] != ""){
+							contador++;
+						}
+					}
+				}
+				if (contador==3){win=true;}
+			}
+			
+			
+			// filas
+			for (let i = 0; i < 3; i++){
+				contador = 1;
+				for (let j = 0; j < 3; j++){
+					if (j>0){
+						if (this.arrayBidimensional[i][j-1] == this.arrayBidimensional[i][j] && this.arrayBidimensional[i][j] != ""){
+							contador++;
+						}
+					}
+				}
+				if (contador==3){win=true;}
+			}
+			
+			// diagonal
+			contador = 1;
+			for (let i = 0; i < 3; i++){
+				for (let j = 0; j < 3; j++){
+					if (i>0 && j>0){
+						if (i==j && this.arrayBidimensional[i-1][j-1] == this.arrayBidimensional[i][j] && this.arrayBidimensional[i][j] != ""){
+							contador++;
+						}
+					}
+				}
+			}
+
+			if (contador==3){win=true;}
+
+			// diagonal inversa
+			let arrayinv = this.arrayBidimensional.reverse();
+			contador = 1;
+			for (let i = 0; i < 3; i++){
+				for (let j = 0; j < 3; j++){
+					if (i>0 && j>0){
+						if (i==j && arrayinv[i-1][j-1] == arrayinv[i][j] && arrayinv[i][j] != ""){
+							contador++;
+						}
+					}
+				}
+			}
+
+			if (contador==3){win=true;}
+			
+			if (jugador=="X"){jugador=1} else{jugador=2}
+			
+			if (win==true){
+				alert ("ENHORABUENA JUGADOR "+jugador+", HAS GANADO!!!!!");
+				this.juegoNuevo(jugador);
+				return true;
+			}
+			
+			if (this.tableroLleno()==true){
+				alert ("EMPATE!!!!");
+				this.juegoNuevo(jugador);
+			}
+		}
+		
+		this.tableroLleno = function(){
+			let lleno = true;
+			for (let i = 0; i < 3; i++){
+				for (let j = 0; j < 3; j++){
+					if (this.arrayBidimensional[i][j] == ""){
+						lleno = false;
+					}
+				}
+			}
+			return lleno;
+		}
+		
+		this.juegoNuevo = function(jugador){
+			if (confirm("Ha terminado. ¿Quieres volver a jugar?")){
+			$("#tablero").remove(); // Borrar tablero.
+			$("body div").eq(0).prepend("<table id='tablero'><thead><tr><th></th><th>A</th><th>B</th><th>C</th></tr></thead><tbody><tr><td>1</td><td></td><td></td><td></td></tr><tr><td>2</td><td></td><td></td><td></td></tr><tr><td>3</td><td></td><td></td><td></td></tr></tbody></table>");
+				
+			tablero = new Tablero();
+				
+			let movimientos = $("#log p");
+			for (let i = 1; i<movimientos.length; i++){
+				movimientos.eq(i).remove();
+			}
+		}
+		
+		}
+	}
+	
+	function SiguienteTurno(){
+		let fin = false;
+		if (tablero.compruebaTablero() == true || tablero.tableroLleno()==true){
+			fin=true;
+		} else {
+			if (jugador==0){
+				jugador=1;
+			} else if (jugador==1){
+				jugador=2
+			} else {
+				jugador=1;
+			}
+			
+		tablero.pideCoordenadas(jugador);
+		}
+	}
+</script>
+</html>
