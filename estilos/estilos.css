@@ -1,0 +1,59 @@
+#tablero {
+    border-collapse: collapse;
+    float: left;
+    width: 40%;
+}
+#log {
+    border-collapse: collapse;
+    float: left;
+    width: 40%;
+    margin-left: 5%;
+    border: 1px solid #555;
+    min-height: 100px;
+    margin-top: 10px;
+}
+#tablero td, #tablero th {
+    border: 1px solid #000080;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    margin: 0;
+    background: #bacdde;
+    font-size: 3em;
+}
+.clear {
+    clear: both;
+}
+#log {
+    padding: 1em;
+}
+#log p:nth-child(1) {
+    font-weight: bold;
+}
+button {
+    margin-top: 1em;
+}
+.j1 {
+    color: red;
+}
+.j2 {
+    color: blue;
+}
+#explicacion {
+    border-collapse: collapse;
+    padding: 0em 1em 0em 1em;
+    border: 1px solid #AEA5FF;
+    background-color: #F3F0FF;
+    width: 40%;
+    float: left;
+    margin-left: 5%;
+}
+#explicacion p:first-child {
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 5px;
+    text-decoration: underline;
+}
+#explicacion p:last-child {
+    margin-top: 5px;
+}

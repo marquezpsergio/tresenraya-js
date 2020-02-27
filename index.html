@@ -1,70 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-<title>3 en raya</title>
-<script src="./00Librerias/jquery-3.4.1.min.js" type="text/javascript"></script>
-<style type="text/css">
-#tablero {
-    border-collapse: collapse;
-    float: left;
-    width: 40%;
-}
-#log {
-    border-collapse: collapse;
-    float: left;
-    width: 40%;
-    margin-left: 5%;
-    border: 1px solid #555;
-    min-height: 100px;
-    margin-top: 10px;
-}
-#tablero td, #tablero th {
-    border: 1px solid #000080;
-    width: 100px;
-    height: 100px;
-    text-align: center;
-    margin: 0;
-    background: #bacdde;
-    font-size: 3em;
-}
-.clear {
-    clear: both;
-}
-#log {
-    padding: 1em;
-}
-#log p:nth-child(1) {
-    font-weight: bold;
-}
-button {
-    margin-top: 1em;
-}
-.j1 {
-    color: red;
-}
-.j2 {
-    color: blue;
-}
-#explicacion {
-    border-collapse: collapse;
-    padding: 0em 1em 0em 1em;
-    border: 1px solid #AEA5FF;
-    background-color: #F3F0FF;
-    width: 40%;
-    float: left;
-    margin-left: 5%;
-}
-#explicacion p:first-child {
-    font-weight: bold;
-    font-size: 20px;
-    margin-bottom: 5px;
-    text-decoration: underline;
-}
-#explicacion p:last-child {
-    margin-top: 5px;
-}
-</style>
+<meta charset="utf-8"/>
+<meta name="description" content="Juego de Tres en Raya en Javascript"/>
+<meta name="keywords" content="tresenraya,javascript,html,css"/>
+<meta name="author" content="Sergio Márquez @ smarquezp05"/>
+<title>Tres en raya</title>
+<!-- JavaScript -->
+<script src="librerias/jquery-3.4.1.min.js" type="text/javascript"></script>
+<!-- Estilos CSS -->
+<link href="estilos/estilos.css" rel="stylesheet" type="text/css"/>
+
 </head>
 <body>
 <div>
@@ -109,7 +55,6 @@ button {
   <div class="clear"></div>
 </div>
 <button onclick="SiguienteTurno(); return false;">Siguiente Turno</button>
-</body>
 <script>
 	let jugador = 0;
 	let tablero = new Tablero();
@@ -329,4 +274,5 @@ button {
 		}
 	}
 </script>
+</body>
 </html>
